@@ -1,0 +1,23 @@
+version: "3"
+services:
+  bug-tracker-server:
+    container_name: bug-tracker-server
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"
+    hostname: bug-tracker-server
+    environment:
+    - ACCEPT_EULA=Y
+    - SA_PASSWORD=1S2e3n4h5a6
+  bug-tracker:
+    image: mcr.microsoft.com/dotnet/sdk:5.0
+    container_name: bug-tracker
+    ports:
+      - "5000:5000"
+    links:
+      - bug-tracker-server
+    volumes:
+      - ./:/dev_sourse
+    tty: true
+    volumes:
+      - ".:/app"
