@@ -17,7 +17,13 @@ services:
     links:
       - bug-tracker-server
     volumes:
-      - ./:/dev_sourse
-    command: bash -c "dotnet dev-certs https --trust && apt-get update -yq  && apt-get install curl gnupg -yq && curl -sL https://deb.nodesource.com/setup_10.x | bash && apt-get install nodejs -yq && tail -f /dev/null"
-    volumes:
       - ".:/app"
+    command: > 
+      bash -c "dotnet dev-certs https --trust 
+      && apt-get update -yq  
+      && apt-get install curl gnupg -yq 
+      && curl -sL https://deb.nodesource.com/setup_10.x | bash 
+      && apt-get install nodejs -yq 
+      && cd app/bug-tracker 
+      && dotnet tool restore 
+      && tail -f /dev/null"
