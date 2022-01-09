@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace bug_tracker.Migrations
 {
-    public partial class initial_schema : Migration
+    public partial class dbmodels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

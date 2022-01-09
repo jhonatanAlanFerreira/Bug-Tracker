@@ -12,7 +12,6 @@ namespace bug_tracker.Models
         public int TaskId { get; set; }
         [ForeignKey("UserCreated")] 
         public int UserCreatedId { get; set; }
-        
         public DateTime CreationDateTime { get; set; }
         public string Text { get; set; }
         public virtual Task Task { get; set; }

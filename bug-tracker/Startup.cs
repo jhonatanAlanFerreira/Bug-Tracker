@@ -28,6 +28,23 @@ namespace bug_tracker
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IGroupUserRepository, GroupUserRepository>();
+            services.AddScoped<ILogRepository, LogRepository>();
+            services.AddScoped<ILogTypeRepository, LogTypeRepository>();
+            services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+            services.AddScoped<IPriorityRepository, PriorityRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IProjectGroupRepository, ProjectGroupRepository>();
+            services.AddScoped<ISubTaskRepository, SubTaskRepository>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<ITaskSetRepository, TaskSetRepository>();
+            services.AddScoped<ITaskSetGroupRepository, TaskSetGroupRepository>();
+            services.AddScoped<ITaskStateRepository, TaskStateRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserTypeRepository, UserTypeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -10,8 +10,8 @@ using bug_tracker.Models;
 namespace bug_tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220108231918_initial_schema")]
-    partial class initial_schema
+    [Migration("20220109194101_db-models")]
+    partial class dbmodels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
