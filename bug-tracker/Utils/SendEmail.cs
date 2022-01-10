@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using MailKit.Net.Smtp;
@@ -27,7 +28,7 @@ namespace bug_tracker.Utils
 
             using var smtp = new SmtpClient();
             smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate("mai.bug.tracker@gmail.com", "naoiaporasenhaaquine");
+            smtp.Authenticate("mai.bug.tracker@gmail.com", Environment.GetEnvironmentVariable("EMAIL_PASSWORD"));
             smtp.Send(email);
             smtp.Disconnect(true);
         }
