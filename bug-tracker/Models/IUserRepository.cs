@@ -1,6 +1,6 @@
 namespace bug_tracker.Models
 {
-    public interface IUserRepository
+    public interface IUserRepository: IBaseRepository<User>
     {
     }
 }

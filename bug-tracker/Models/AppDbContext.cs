@@ -1,11 +1,9 @@
 using System.Linq;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace bug_tracker.Models
 {
-    public class AppDbContext : IdentityDbContext<IdentityUser>
+    public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -17,6 +15,8 @@ namespace bug_tracker.Models
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            modelbuilder.Entity<UserType>().HasData(new UserType {Id = 1, Name = "Administrador"});
 
             base.OnModelCreating(modelbuilder);
         }

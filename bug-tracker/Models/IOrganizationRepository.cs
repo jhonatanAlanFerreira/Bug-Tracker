@@ -1,6 +1,6 @@
 namespace bug_tracker.Models
 {
-    public interface IOrganizationRepository
+    public interface IOrganizationRepository: IBaseRepository<Organization>
     {
     }
 }
