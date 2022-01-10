@@ -28,5 +28,24 @@ namespace bug_tracker.Models
             }
         }
 
+        public TEntity Update(TEntity data)
+        {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            try
+            {
+                _appDbContext.Update(data);
+                _appDbContext.SaveChanges();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(data)} não foi atualizado: {ex.Message}");
+            }
+        }
+
     }
 }

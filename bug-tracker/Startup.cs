@@ -29,6 +29,8 @@ namespace bug_tracker
                 configuration.RootPath = "ClientApp/dist";
             });
 
+            services.AddHttpContextAccessor();
+
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IGroupUserRepository, GroupUserRepository>();

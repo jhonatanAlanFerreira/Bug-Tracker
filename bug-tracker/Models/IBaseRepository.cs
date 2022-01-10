@@ -4,6 +4,7 @@ namespace bug_tracker.Models
 {
     public interface IBaseRepository<TEntity>
     {
-        TEntity Create(TEntity entity);
+        TEntity Create(TEntity data);
+        TEntity Update(TEntity data);
     }
 }
