@@ -5,6 +5,7 @@ using bug_tracker.Models;
 using bug_tracker.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto.Generators;
 
 namespace bug_tracker.controllers
 {
@@ -33,12 +34,15 @@ namespace bug_tracker.controllers
         {
             Organization newOrganization = _organizationRepository.Create(organization);
 
+            string password = RandomChars.RandomString(10);
+            string bcryptPass = BCrypt.Net.BCrypt.HashPassword(password);
+
             User newUser = new User
             {
                 Name = "Administrador",
                 Login = "Admin_" + RandomChars.RandomString(5),
                 Email = newOrganization.Email,
-                Password = RandomChars.RandomString(10),
+                Password = bcryptPass,
                 OrganizationId = newOrganization.Id,
                 UserTypeId = 1
             };
@@ -49,7 +53,7 @@ namespace bug_tracker.controllers
 
             emailBindings.Add("organization", newOrganization.Name);
             emailBindings.Add("login", newUser.Login);
-            emailBindings.Add("password", newUser.Password);
+            emailBindings.Add("password", password);
 
             SendEmail.send(newOrganization.Email, "Bug-Tracker - Informações de login", "organization-create", emailBindings);
 

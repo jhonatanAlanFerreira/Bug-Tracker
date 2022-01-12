@@ -9,11 +9,11 @@ namespace bug_tracker.Models
 
         public User GetByPassword(UserLogin userLogin)
         {
-
-            User user = _appDbContext.User
+             User user = _appDbContext.User
             .Where(user => user.Login == userLogin.Login)
-            .Where(user => user.Password == userLogin.Password)
             .FirstOrDefault();
+
+            if(!BCrypt.Net.BCrypt.Verify(userLogin.Password, user.Password)) return null;
 
             return user;
         }
