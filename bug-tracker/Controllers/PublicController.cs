@@ -5,7 +5,6 @@ using bug_tracker.Models;
 using bug_tracker.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Crypto.Generators;
 
 namespace bug_tracker.controllers
 {
@@ -30,7 +29,7 @@ namespace bug_tracker.controllers
 
         [HttpPost]
         [Route("organization")]
-        public RequestResponse createOrganization([FromBody] Organization organization)
+        public RequestResponse CreateOrganization([FromBody] Organization organization)
         {
             Organization newOrganization = _organizationRepository.Create(organization);
 
@@ -72,7 +71,7 @@ namespace bug_tracker.controllers
 
         [HttpPost]
         [Route("user/login")]
-        public RequestResponse userLogin([FromBody] UserLogin userLogin)
+        public RequestResponse UserLogin([FromBody] UserLogin userLogin)
         {
             User user = _userRepository.GetByPassword(userLogin);
             if (user == null)

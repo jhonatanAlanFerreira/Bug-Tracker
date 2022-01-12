@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace bug_tracker.Models
 
-{    public class TaskState
+{    public class TaskState : BaseEntity
     {
         [Key]
-        public int Id {get;set;}
+        public override int Id {get;set;}
         
         public string Name {get;set;}
         [ForeignKey("Organization")] 

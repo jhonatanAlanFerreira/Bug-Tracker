@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace bug_tracker.Models
 
-{    public class Project
+{    public class Project : BaseEntity
     {
         [Key]
-        public int Id {get;set;}
+        public override int Id {get;set;}
         
         public string Name {get;set;}
         [ForeignKey("Organization")] 

@@ -3,7 +3,7 @@ using bug_tracker.Classes;
 
 namespace bug_tracker.Models
 {
-    public class UserRepository : BaseRepository<User>, IUserRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository 
     {
         public UserRepository(AppDbContext appDbContext) : base(appDbContext) { }
 

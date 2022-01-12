@@ -1,8 +1,9 @@
 using System;
+using bug_tracker.Utils;
 
 namespace bug_tracker.Models
 {
-    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>
+    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity, new()
     {
         protected readonly AppDbContext _appDbContext;
         public BaseRepository(AppDbContext appDbContext)
@@ -37,8 +38,13 @@ namespace bug_tracker.Models
 
             try
             {
-                _appDbContext.Update(data);
+                TEntity entity = new TEntity { Id = data.Id };
+                var notNullData = ClassToDictionary.ToDictionary<TEntity>(data);
+
+                _appDbContext.Attach(entity);
+                _appDbContext.Entry(entity).CurrentValues.SetValues(notNullData);
                 _appDbContext.SaveChanges();
+
                 return data;
             }
             catch (Exception ex)
@@ -46,6 +52,5 @@ namespace bug_tracker.Models
                 throw new Exception($"{nameof(data)} não foi atualizado: {ex.Message}");
             }
         }
-
     }
 }

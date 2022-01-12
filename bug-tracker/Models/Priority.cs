@@ -2,10 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace bug_tracker.Models
 
-{    public class Priority
+{    public class Priority : BaseEntity
     {
         [Key]
-        public int Id {get;set;}
+        public override int Id {get;set;}
         
         public string Color {get;set;}
         
