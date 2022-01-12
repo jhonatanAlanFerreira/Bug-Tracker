@@ -54,6 +54,7 @@ namespace bug_tracker.controllers
             emailBindings.Add("organization", newOrganization.Name);
             emailBindings.Add("login", newUser.Login);
             emailBindings.Add("password", password);
+            emailBindings.Add("orgnickname", organization.NickName);
 
             SendEmail.send(newOrganization.Email, "Bug-Tracker - Informações de login", "organization-create", emailBindings);
 

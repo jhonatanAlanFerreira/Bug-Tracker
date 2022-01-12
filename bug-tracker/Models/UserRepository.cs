@@ -9,13 +9,18 @@ namespace bug_tracker.Models
 
         public User GetByPassword(UserLogin userLogin)
         {
-             User user = _appDbContext.User
-            .Where(user => user.Login == userLogin.Login)
-            .FirstOrDefault();
+            var userOrganization = _appDbContext.User
+           .Join(_appDbContext.Organization,
+           user => user.OrganizationId,
+           organization => organization.Id,
+           (userRes, organizationRes) => new { User = userRes, Organization = organizationRes })
+           .Where(userOrganization => userOrganization.User.Login == userLogin.Login)
+           .Where(userOrganization => userOrganization.Organization.NickName == userLogin.OrgNickName)
+           .FirstOrDefault();
 
-            if(!BCrypt.Net.BCrypt.Verify(userLogin.Password, user.Password)) return null;
+            if (userOrganization == null || !BCrypt.Net.BCrypt.Verify(userLogin.Password, userOrganization.User.Password)) return null;
 
-            return user;
+            return userOrganization.User;
         }
     }
 }
