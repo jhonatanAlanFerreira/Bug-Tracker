@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using bug_tracker.Models;
 
 namespace bug_tracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220112023249_loginTypes")]
+    partial class loginTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,7 +110,7 @@ namespace bug_tracker.Migrations
                     b.Property<int>("LogTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrganizationId")
+                    b.Property<int>("OrganizationId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -144,11 +146,6 @@ namespace bug_tracker.Migrations
                         {
                             Id = 2,
                             Name = "Login realizado"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Login incorreto"
                         });
                 });
 
@@ -540,7 +537,8 @@ namespace bug_tracker.Migrations
                     b.HasOne("bug_tracker.Models.Organization", "Organization")
                         .WithMany()
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("LogType");
 

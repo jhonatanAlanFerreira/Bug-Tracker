@@ -1,6 +1,6 @@
 namespace bug_tracker.Models
 {
-    public interface ILogRepository
+    public interface ILogRepository: IBaseRepository<Log>
     {
     }
 }

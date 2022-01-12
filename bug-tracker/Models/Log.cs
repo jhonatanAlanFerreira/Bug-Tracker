@@ -11,11 +11,9 @@ namespace bug_tracker.Models
         [ForeignKey("LogType")] 
         public int LogTypeId {get;set;}
         [ForeignKey("Organization")] 
-        public int OrganizationId {get;set;}
+        public int? OrganizationId {get;set;}
         public string Description {get;set;}
-        
         public string Ip {get;set;}
-        
         public DateTime CreationDateTime {get;set;}
         public virtual LogType LogType { get; set; }
         public virtual Organization Organization { get; set; }

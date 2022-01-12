@@ -18,6 +18,10 @@ namespace bug_tracker.Models
 
             modelbuilder.Entity<UserType>().HasData(new UserType {Id = 1, Name = "Administrador"});
 
+            modelbuilder.Entity<LogType>().HasData(new LogType {Id = 1, Name = "Nova organização criada"});
+            modelbuilder.Entity<LogType>().HasData(new LogType {Id = 2, Name = "Login realizado"});
+            modelbuilder.Entity<LogType>().HasData(new LogType {Id = 3, Name = "Login incorreto"});
+
             base.OnModelCreating(modelbuilder);
         }
 

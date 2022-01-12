@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using bug_tracker.Classes;
 using bug_tracker.Models;
@@ -13,11 +14,16 @@ namespace bug_tracker.controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IOrganizationRepository _organizationRepository;
-        private IHttpContextAccessor _contextAccessor;
-        public PublicController(IUserRepository userRepository, IOrganizationRepository organizationRepository, IHttpContextAccessor contextAccessor)
+        private readonly ILogRepository _logRepository;
+        private readonly IHttpContextAccessor _contextAccessor;
+        public PublicController(IUserRepository userRepository,
+        IOrganizationRepository organizationRepository,
+        IHttpContextAccessor contextAccessor,
+        ILogRepository logRepository)
         {
             _userRepository = userRepository;
             _organizationRepository = organizationRepository;
+            _logRepository = logRepository;
             _contextAccessor = contextAccessor;
         }
 
@@ -47,6 +53,15 @@ namespace bug_tracker.controllers
 
             SendEmail.send(newOrganization.Email, "Bug-Tracker - Informações de login", "organization-create", emailBindings);
 
+            _logRepository.Create(new Log
+            {
+                LogTypeId = 1,
+                OrganizationId = newOrganization.Id,
+                Description = "Organização '" + newOrganization.Name + "' criada",
+                Ip = _contextAccessor.HttpContext.Connection.RemoteIpAddress.ToString(),
+                CreationDateTime = DateTime.Now
+            });
+
             return new RequestResponse { Message = "Cadastro realizado com sucesso, as informações de acesso foram enviadas ao e-mail da organização." };
         }
 
@@ -57,11 +72,29 @@ namespace bug_tracker.controllers
             User user = _userRepository.GetByPassword(userLogin);
             if (user == null)
             {
+                _logRepository.Create(new Log
+                {
+                    LogTypeId = 3,
+                    Description = "Tentativa de login com dados inválidos",
+                    Ip = _contextAccessor.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    CreationDateTime = DateTime.Now
+                });
+
                 _contextAccessor.HttpContext.Response.StatusCode = 403;
                 return new RequestResponse { Error = true, Message = "Login ou senha inválida" };
             }
             user.Token = TokenGenerate.GenerateToken(user);
             _userRepository.Update(user);
+
+            _logRepository.Create(new Log
+            {
+                LogTypeId = 1,
+                OrganizationId = user.OrganizationId,
+                Description = "Usuário '" + user.Name + "' logou no sistema",
+                Ip = _contextAccessor.HttpContext.Connection.RemoteIpAddress.ToString(),
+                CreationDateTime = DateTime.Now
+            });
+
             return new RequestResponse { Message = "Login efetuado com sucesso", Data = new { Token = user.Token } };
         }
     }
