@@ -5,7 +5,7 @@ namespace bug_tracker.Utils
 {
     public static class ClassToDictionary
     {
-        public static Dictionary<string, object> ToDictionary<T>(T data, bool SkipNull = true)
+        public static Dictionary<string, object> ToDictionary<T>(T data)
         {
             Dictionary<string, object> ret = new Dictionary<string, object>();
 
@@ -16,10 +16,6 @@ namespace bug_tracker.Utils
                 if (val != null)
                 {
                     ret.Add(propName, val);
-                }
-                else if (!SkipNull)
-                {
-                    ret.Add(propName, null);
                 }
             }
 

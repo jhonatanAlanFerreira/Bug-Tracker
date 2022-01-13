@@ -1,11 +1,18 @@
 using System;
+using System.Collections.Generic;
 using bug_tracker.Utils;
 
 namespace bug_tracker.Models
 {
     public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity, new()
     {
+        private List<string> ColumnsGuard = new List<string>();
         protected readonly AppDbContext _appDbContext;
+        protected void AddColumnGuard<TGuardEntity>(string column)
+        {
+            if (typeof(TGuardEntity).GetProperty(column) == null) throw new Exception("A coluna " + column + " não existe em " + typeof(TGuardEntity));
+            ColumnsGuard.Add(column);
+        }
         public BaseRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
@@ -29,7 +36,7 @@ namespace bug_tracker.Models
             }
         }
 
-        public TEntity Update(TEntity data)
+        public Dictionary<string, object> UpdateWithoutNull(TEntity data, bool forceFill = false)
         {
             if (data == null)
             {
@@ -39,10 +46,41 @@ namespace bug_tracker.Models
             try
             {
                 TEntity entity = new TEntity { Id = data.Id };
-                var notNullData = ClassToDictionary.ToDictionary<TEntity>(data);
+                var dictionaryData = ClassToDictionary.ToDictionary<TEntity>(data);
+
+                if (!forceFill) ColumnsGuard.ForEach(column =>
+                 {
+                     dictionaryData.Remove(column);
+                 });
 
                 _appDbContext.Attach(entity);
-                _appDbContext.Entry(entity).CurrentValues.SetValues(notNullData);
+                _appDbContext.Entry(entity).CurrentValues.SetValues(dictionaryData);
+                _appDbContext.SaveChanges();
+
+                return dictionaryData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(data)} não foi atualizado: {ex.Message}");
+            }
+        }
+
+        public TEntity Update(TEntity data, bool forceFill = false)
+        {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            try
+            {
+                if (!forceFill) ColumnsGuard.ForEach(column =>
+                {
+                    data.GetType().GetProperty(column).SetValue(data, null);
+                });
+
+                _appDbContext.Update(data);
+                _appDbContext.SaveChanges();
                 _appDbContext.SaveChanges();
 
                 return data;

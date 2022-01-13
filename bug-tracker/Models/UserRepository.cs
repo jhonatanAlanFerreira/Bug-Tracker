@@ -5,7 +5,10 @@ namespace bug_tracker.Models
 {
     public class UserRepository : BaseRepository<User>, IUserRepository 
     {
-        public UserRepository(AppDbContext appDbContext) : base(appDbContext) { }
+        public UserRepository(AppDbContext appDbContext) : base(appDbContext) {
+            AddColumnGuard<User>("OrganizationId");
+            AddColumnGuard<User>("UserTypeId");
+        }
 
         public User GetByPassword(UserLogin userLogin)
         {

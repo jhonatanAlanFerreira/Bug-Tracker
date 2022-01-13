@@ -1,3 +1,4 @@
+using bug_tracker.Classes;
 using bug_tracker.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,8 +15,10 @@ namespace bug_tracker.controllers
         }
 
         [HttpPut]
-        public User Update([FromBody] User user){
-            return _userRepository.Update(user);
+        public RequestResponse Update([FromBody] User user){
+            var updated = _userRepository.UpdateWithoutNull(user);
+
+            return new RequestResponse { Message = "Dados atualizados com sucesso", Data = updated };
         }
     }
 }
