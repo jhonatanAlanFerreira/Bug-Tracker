@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using bug_tracker.Models;
+using bug_tracker.Middleware;
 
 namespace bug_tracker
 {
@@ -62,6 +63,8 @@ namespace bug_tracker
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseMiddleware<AuthenticationMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

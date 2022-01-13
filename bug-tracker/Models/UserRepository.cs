@@ -4,9 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace bug_tracker.Models
 {
-    public class UserRepository : BaseRepository<User>, IUserRepository 
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        public UserRepository(AppDbContext appDbContext) : base(appDbContext) {
+        public UserRepository(AppDbContext appDbContext) : base(appDbContext)
+        {
             AddColumnGuard<User>("OrganizationId");
             AddColumnGuard<User>("UserTypeId");
         }
@@ -26,6 +27,13 @@ namespace bug_tracker.Models
             if (userOrganization == null || !BCrypt.Net.BCrypt.Verify(userLogin.Password, userOrganization.User.Password)) return null;
 
             return userOrganization.User;
+        }
+
+        public User FindByToken(string token)
+        {
+            return _appDbContext.User
+            .AsNoTracking()
+            .Where(u => u.Token == token).FirstOrDefault();
         }
     }
 }
