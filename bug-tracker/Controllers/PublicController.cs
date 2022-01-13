@@ -88,7 +88,7 @@ namespace bug_tracker.controllers
                 return new RequestResponse { Error = true, Message = "Login ou senha inválida" };
             }
             user.Token = TokenGenerate.GenerateToken(user);
-            _userRepository.Update(user);
+            _userRepository.UpdateWithoutNull(user);
 
             _logRepository.Create(new Log
             {

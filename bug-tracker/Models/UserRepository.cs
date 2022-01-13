@@ -1,5 +1,6 @@
 using System.Linq;
 using bug_tracker.Classes;
+using Microsoft.EntityFrameworkCore;
 
 namespace bug_tracker.Models
 {
@@ -12,7 +13,8 @@ namespace bug_tracker.Models
 
         public User GetByPassword(UserLogin userLogin)
         {
-            var userOrganization = _appDbContext.User
+            var userOrganization = _appDbContext.User.
+            AsNoTracking()
            .Join(_appDbContext.Organization,
            user => user.OrganizationId,
            organization => organization.Id,
